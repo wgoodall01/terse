@@ -1,10 +1,42 @@
 steps:
+  # Setup GOPATH
+- name: 'ubuntu'
+  entrypoint: 'bash'
+  volumes:
+  - name: 'go_files'
+    path: '/gopath'
+  args:
+  - '-c'
+  - |
+      mkdir -p /gopath/src/github.com/wgoodall01/
+      cp -r /workspace /gopath/src/github.com/wgoodall01/terse
+
+
   # Install dependencies
 - name: 'gcr.io/cloud-builders/go'
+  volumes:
+  - name: 'go_files'
+    path: '/gopath'
   args: ['get', './...']
+  env: ['GOPATH=/gopath']
+  dir: '/gopath/src/github.com/wgoodall01/terse'
+
+  # Test
+- name: 'gcr.io/cloud-builders/go'
+  volumes:
+  - name: 'go_files'
+    path: '/gopath'
+  args: ['test', './...']
+  env: ['GOPATH=/gopath']
+  dir: '/gopath/src/github.com/wgoodall01/terse'
 
   # Deploy to App Engine
 - name: "gcr.io/cloud-builders/gcloud"
-  args: ['app', 'deploy']
+  volumes:
+  - name: 'go_files'
+    path: '/gopath'
+  args: ['app', 'deploy'] 
+  env: ['GOPATH=/gopath']
+  dir: '/gopath/src/github.com/wgoodall01/terse'
 
-timeout: 5m
+timeout: 500s
