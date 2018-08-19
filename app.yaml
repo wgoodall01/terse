@@ -1,7 +1,13 @@
 runtime: go
 api_version: go1
 
+automatic_scaling:
+  min_instances: 0
+  max_idle_instances: 0
+
+env_variables: 
+  OAUTH_CLIENT_ID: "283119989073-faqg5ebg98snvmi7f3gov4dpjv3pqd5g.apps.googleusercontent.com"
+
 handlers:
 - url: /.*
   script: _go_app
-  login: admin
