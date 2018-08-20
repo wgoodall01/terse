@@ -9,5 +9,25 @@ env_variables:
   OAUTH_CLIENT_ID: "283119989073-faqg5ebg98snvmi7f3gov4dpjv3pqd5g.apps.googleusercontent.com"
 
 handlers:
-- url: /.*
-  script: _go_app
+    # Serve the SPA at /.
+  - url: /$
+    static_files: client/build/index.html
+    upload: client/build/index.html
+    secure: always
+
+    # For the SPA's static files, never expire in cache.
+    # create-react-app includes hashes in URLs.
+  - url: /_app
+    static_dir: client/build
+    expiration: 365d
+    secure: always
+  
+    # Serve the API from the go app
+  - url: /_api/.*
+    script: _go_app
+    secure: always
+  
+    # Serve redirects in the go app
+  - url: /.*
+    script: _go_app
+    secure: always

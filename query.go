@@ -3,11 +3,10 @@ package terse
 import (
 	"context"
 
+	graphql "github.com/graph-gophers/graphql-go"
 	"github.com/pkg/errors"
 	"google.golang.org/appengine/datastore"
 	"google.golang.org/appengine/log"
-
-	graphql "github.com/graph-gophers/graphql-go"
 )
 
 type QueryResolver struct{}
@@ -35,19 +34,20 @@ func (q *QueryResolver) Link(ctx context.Context, args LinkQueryArgs) ([]LinkRes
 
 	links := make([]LinkResolver, 0)
 	for iter := query.Run(ctx); ; {
-		var linkResolver LinkResolver
-		linkResolver.link = &Link{}
-		key, err := iter.Next(linkResolver.link)
-
+		link := &Link{}
+		key, err := iter.Next(link)
 		if err == datastore.Done {
 			break
 		}
+
+		link.Key = key
 		if err != nil {
 			log.Errorf(ctx, "Couldn't query links (key=%v):%v", key, err)
 			return nil, errors.Wrap(err, "couldn't query Links")
 		}
 
-		links = append(links, linkResolver)
+		links = append(links, LinkResolver{link: link})
+
 	}
 
 	return links, nil

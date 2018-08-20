@@ -1,0 +1,22 @@
+.LinkMenu_item {
+  border-bottom: 5px solid var(--color-shade);
+  padding: 16px;
+}
+
+.LinkMenu_item .LinkMenu_shade-span {
+  color: var(--color-med);
+}
+
+.LinkMenu_item * {
+  margin: 0;
+}
+
+.LinkMenu_a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.LinkMenu_selected {
+  background-color: var(--color-primary);
+  border-right: 5px solid var(--color-shade);
+}

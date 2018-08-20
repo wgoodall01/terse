@@ -1,0 +1,13 @@
+.EditPage {
+  display: flex;
+  flex-direction: row;
+}
+
+.EditPage_menu {
+  flex: 400px 0;
+}
+
+.EditPage_detail {
+  flex: 1;
+  margin: 0 20px;
+}

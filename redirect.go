@@ -4,13 +4,14 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/gorilla/mux"
 	"google.golang.org/appengine/datastore"
 )
 
 func NewRedirectHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		slug := strings.Trim(r.URL.Path, "/")
+		slug := mux.Vars(r)["short"]
 		slug = strings.ToLower(slug)
 
 		if !ValidSlug(slug) {

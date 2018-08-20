@@ -18,7 +18,7 @@ func init() {
 	r := mux.NewRouter()
 	r.Use(WithAppengineContext)
 
-	api := r.PathPrefix("/_/").Subrouter()
+	api := r.PathPrefix("/_api/").Subrouter()
 	api.Use(WithAuthentication)
 	api.Handle("/graphql", &relay.Handler{Schema: schema})
 	api.HandleFunc("/info", func(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +52,7 @@ func init() {
 		tw.Flush()
 	})
 
-	r.Handle("/", NewRedirectHandler())
+	r.Handle("/{short}", NewRedirectHandler())
 
 	http.Handle("/", r) // register handler for App Engine
 }

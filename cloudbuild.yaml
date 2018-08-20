@@ -12,7 +12,7 @@ steps:
       cp -r /workspace /gopath/src/github.com/wgoodall01/terse
 
 
-  # Install dependencies
+  # backend: Install dependencies
 - name: 'gcr.io/cloud-builders/go'
   volumes:
   - name: 'go_files'
@@ -21,7 +21,7 @@ steps:
   env: ['GOPATH=/gopath']
   dir: '/gopath/src/github.com/wgoodall01/terse'
 
-  # Test
+  # backend: Test
 - name: 'gcr.io/cloud-builders/go'
   volumes:
   - name: 'go_files'
@@ -30,13 +30,31 @@ steps:
   env: ['GOPATH=/gopath']
   dir: '/gopath/src/github.com/wgoodall01/terse'
 
-  # Deploy to App Engine
-- name: "gcr.io/cloud-builders/gcloud"
+  # frontend: install deps
+- name: 'node:10.8.0'
+  entrypoint: 'yarn'
+  args: ['install', '--production']
   volumes:
   - name: 'go_files'
     path: '/gopath'
+  dir: '/gopath/src/github.com/wgoodall01/terse/client'
+
+  # frontend: build assets
+- name: 'node:10.8.0'
+  entrypoint: 'yarn'
+  args: ['run', 'build']
+  volumes:
+  - name: 'go_files'
+    path: '/gopath'
+  dir: '/gopath/src/github.com/wgoodall01/terse/client'
+
+  # Deploy everything to App Engine
+- name: "gcr.io/cloud-builders/gcloud"
   args: ['app', 'deploy'] 
   env: ['GOPATH=/gopath']
+  volumes:
+  - name: 'go_files'
+    path: '/gopath'
   dir: '/gopath/src/github.com/wgoodall01/terse'
 
 timeout: 500s

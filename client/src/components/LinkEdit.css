@@ -1,0 +1,23 @@
+.LinkEdit_input {
+  display: block;
+  width: 100%;
+}
+
+.LinkEdit_short {
+  font-size: 50px;
+  border: none;
+  border-bottom: 5px solid var(--color-shade);
+}
+
+.LinkEdit_long {
+  margin-top: 10px;
+  border: none;
+  font-family: monospace;
+}
+
+.LinkEdit_button-row {
+  margin-top: 30px;
+  margin-left: -5px;
+  display: flex;
+  flex-direction: row;
+}

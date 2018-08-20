@@ -12,7 +12,7 @@ import (
 
 type Link struct {
 	// Datastore key for entity
-	Key datastore.Key
+	Key *datastore.Key
 
 	// URL shortname.
 	Short string

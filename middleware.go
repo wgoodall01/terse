@@ -13,7 +13,7 @@ import (
 
 func WithAppengineContext(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ctx := appengine.NewContext(r)
+		ctx := appengine.WithContext(r.Context(), r)
 		request := r.WithContext(ctx)
 		handler.ServeHTTP(w, request)
 	})
